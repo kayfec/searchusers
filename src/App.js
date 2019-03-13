@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 
-const ul = styled.li`
+const li = styled('li')`
 font-size: 1.5em;
 color: purple;
 border: 3px;
 `;
 
-const div = styled.div`
+const div = styled('div')`
 border: 3px;
 outline : blue;
 `;
