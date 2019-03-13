@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
+
+
+const ul = styled.li`
+font-size: 1.5em;
+color: purple;
+border: 3px;
+`;
+
+const div = styled.div`
+border: 3px;
+outline : blue;
+`;
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       users:[],
-      URL : 'https://api.github.com/search/users?q=location%3Acherkassy&sort=followers'
     };
   }
   componentDidMount() {
@@ -31,7 +43,7 @@ class App extends Component {
     this.setState({
       users:[]
     })
-    throw new Error('wwww')
+    throw new Error('not found user')
   }
 
   render() {
@@ -43,8 +55,6 @@ class App extends Component {
     },5000)
     return (
         <div>
-          <div>URL : <input defaultValue={this.state.URL} /></div>
-          <button>Search</button>
           <button type='button' onClick={this.simlulateError}>error</button>
           <ul>
             {
