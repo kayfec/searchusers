@@ -2,22 +2,20 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 
-const li = styled('li')`
+const Li = styled('li')`
 font-size: 1.5em;
 color: purple;
 border: 3px;
-`;
-
-const div = styled('div')`
-border: 3px;
 outline : blue;
 `;
+
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       users:[],
+      error: false,
     };
   }
   componentDidMount() {
@@ -33,26 +31,26 @@ class App extends Component {
       return items
     }
     return getItems().then(data => {
+      if(data.length > 0) {
+        this.setState({
+          users:data
+        })
+      } else {
+        throw new Error('Error: less than 10 Users received')
+      }
+    }).catch(err=> {
       this.setState({
-        users:data
+        hasError:true
       })
+      throw new Error(err)
     })
-  }
-
-  simlulateError = () => {
-    this.setState({
-      users:[]
-    })
-    throw new Error('not found user')
   }
 
   render() {
-    setTimeout(() => {
-      if(this.state.users.length === 0) {
-        throw new Error('/wtf')
-      }
+    if(this.state.error) {
+      throw new Error('Simulate Error');
+    }
 
-    },5000)
     return (
         <div>
           <button type='button' onClick={this.simlulateError}>error</button>
@@ -61,10 +59,10 @@ class App extends Component {
               this.state.users.map(item => {
                 const {id,avatar_url,login,html_url} = item;
                 return (
-                    <li key={id}>
+                    <Li key={id}>
                       <img src={avatar_url} alt="person_img"/>
                       <div><a href={html_url}>{login}</a></div>
-                    </li>
+                    </Li>
                 )
               })
             }
