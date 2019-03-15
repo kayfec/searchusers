@@ -2,11 +2,38 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 
-const Li = styled('li')`
-font-size: 1.5em;
-color: purple;
-border: 3px;
-outline : blue;
+const Span = styled('span')`
+  font-size: 1.5em;
+  border: 2px;
+`;
+
+const Img = styled('img')`
+    border: 2px solid #55c5e9;
+    padding: 15px;
+    background: #666;
+    margin-top: 12px;
+    margin-right: 10px; 
+    // margin-bottom: 10px; 
+    width: 150px; 
+    height: 150px;
+   
+`;
+
+const Button = styled('button')`
+  display: inline-block;
+  color: gray;
+  font-weight: 700;
+  text-decoration: none;
+  user-select: none;
+  padding: .5em 2em;
+  outline: none;
+  border: 2px solid;
+  border-radius: 1px;
+  transition: 0.2s;
+  margin-bottom: 10px;
+  
+  :hover { background: rgba(255,255,255,.2); };
+  :active { background: white; };
 `;
 
 
@@ -15,12 +42,12 @@ class App extends Component {
     super(props);
     this.state = {
       users:[],
-      error: false,
+      hasError: false,
     };
   }
   componentDidMount() {
     this.search();
-  }
+  };
 
   search = () => {
 
@@ -29,7 +56,7 @@ class App extends Component {
       const data = await result.json();
       const items =  data.items.slice(0,10);
       return items
-    }
+    };
     return getItems().then(data => {
       if(data.length > 0) {
         this.setState({
@@ -41,32 +68,40 @@ class App extends Component {
     }).catch(err=> {
       this.setState({
         hasError:true
-      })
+      });
       throw new Error(err)
     })
-  }
+  };
+
+  simlulateError = () => {
+    this.setState({
+      hasError:true
+    });
+  };
+
+
 
   render() {
-    if(this.state.error) {
+    if(this.state.hasError) {
       throw new Error('Simulate Error');
     }
 
     return (
         <div>
-          <button type='button' onClick={this.simlulateError}>error</button>
-          <ul>
+          <Button type='button' onClick={this.simlulateError}>error</Button>
+          <div>
             {
               this.state.users.map(item => {
                 const {id,avatar_url,login,html_url} = item;
                 return (
-                    <Li key={id}>
-                      <img src={avatar_url} alt="person_img"/>
+                    <Span key={id}>
+                      <Img src={avatar_url} alt="person_img"/>
                       <div><a href={html_url}>{login}</a></div>
-                    </Li>
+                    </Span>
                 )
               })
             }
-          </ul>
+          </div>
         </div>
     );
 
